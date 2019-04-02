@@ -181,7 +181,7 @@ We do not assume that the particle forms a perfect sphere. We do assume that dev
 \vspace{0.3em}
 \includegraphics[width =  0.3\linewidth]{images/exp1_t01z4.png}
 \includegraphics[width =  0.3\linewidth]{images/exp1_t01z5.png}
-\caption{Illustration of the different slices of one time}
+\caption{Consecutive depth ($z$) slices corresponding to a single time.}
 \label{fig:sequence}
 \end{figure}
 
@@ -190,7 +190,7 @@ Fig~\ref{fig:flowchart} summarize the pipeline we developed. We named ``2D'' the
 \subsection{2D segmentation}
 The first step of our pipeline is a 2D segmentation of the beads and uses both standard and modern mathematical morphology techniques~\cite{najman-talbot-Wiley-2010}. The objective is to obtain a binary image of the beads suitable for masking and labelling. The steps are the following:
 \begin{enumerate}
-\item Supression of small local minimas: this is performed using a closing by reconstruction with an initial dilation with a disk of radius 4. This yields image $g$.
+\item Supression of small local minimas: this is performed using a closing by reconstruction with an initial dilation by a disk of radius 4. This yields image $g$.
 \item Calculation of the min-tree of $g$.
 \item Filtering of nodes according to multiple criteria: size must be smaller than 500, the grey-level intensity must be lower than 100, and the contrast of the component greater than 80. We keep the maximal components meeting all these criteria.
 \item Regularisation of the selected blobs: holes are filled, and the components are dilated with a 4-connected structuring element and opened with a disk of radius 5.
@@ -199,10 +199,10 @@ An example of results of this procedure is shown in Fig.~\ref{fig:seg1}
 
 \begin{figure}
 \centering
-\includegraphics[width =  0.3\linewidth]{images/exp1_t41z4.png}
-\includegraphics[width =  0.3\linewidth]{images/exp1_t41z4_bin.png}
-\includegraphics[width =  0.3\linewidth]{images/surimp_exp1_t41z4.png}
-\caption{Illustration of the segmentation procedure}
+\subfigure[]{\includegraphics[width =  0.3\linewidth]{images/exp1_t41z4.png}}
+\subfigure[]{\includegraphics[width =  0.3\linewidth]{images/exp1_t41z4_bin.png}}
+\subfigure[]{\includegraphics[width =  0.3\linewidth]{images/surimp_exp1_t41z4.png}}
+\caption{Illustration of the segmentation procedure: (a) initial image, (b) result of the segmentation described in the text,  (c) overlay of the segmentation on the initial image.}
 \label{fig:seg1}
 \end{figure}
 
@@ -211,16 +211,16 @@ An example of results of this procedure is shown in Fig.~\ref{fig:seg1}
 For each acquisition time, we stack the corresponding 2D segmented slices. As the segmentation is performed in 2D, and the beads may move significantly between slices, some irregularities may appear at the bead boundaries, especially near the bead poles. The first step is hence a regularization in the z axis to reconnect these incomplete beads by applying a 2D closing with a disk of radius 1 in all the $xz$ planes.
 
 \subsection{3D individualization}
-As some beads can touch, we separated them using a classical watershed procedure. After noise removal with an opening on the binary image, we extract beads markers using the distance transform with a threshold and the background marker. A watershed is then applied. The result is cleaned by removing small objects using a volume criterion. All the steps are illustrated in Fig.~\ref{fig:temporal}.
+As some beads can touch, we separated them using a classical watershed procedure. After noise removal with an opening on the binary image, we extract beads markers using the distance transform with a threshold and the background marker. A watershed is then applied. The result is cleaned by removing small objects using a volume criterion. All the steps are illustrated in Fig.~\ref{fig:temporal}. Morphological parameters were empirically optimized on a small subset of the data.
 
 \begin{figure}
 \centering
-\subfigure{\includegraphics[width =  0.3\linewidth]{images/exp1_t01z5.png}}
-\subfigure{\includegraphics[width =  0.3\linewidth]{images/orig_1.png}}
-\subfigure{\includegraphics[width =  0.3\linewidth]{images/orig_fermee_1.png}}
+\subfigure[]{\includegraphics[width =  0.3\linewidth]{images/exp1_t01z5.png}}
+\subfigure[]{\includegraphics[width =  0.3\linewidth]{images/orig_1.png}}
+\subfigure[]{\includegraphics[width =  0.3\linewidth]{images/orig_fermee_1.png}}
 \vspace{0.3em}
-\subfigure{\includegraphics[width =  0.3\linewidth]{images/orig_separ_1.png}}
-\subfigure{\includegraphics[width =  0.3\linewidth]{images/toto.png}}
+\subfigure[]{\includegraphics[width =  0.3\linewidth]{images/orig_separ_1.png}}
+\subfigure[]{\includegraphics[width =  0.3\linewidth]{images/toto.png}}
 \caption{Results of the successive steps: (a) initial image, (b) inital segmentation, (c) 3d regularization, (d) bead separation, (e) individualization and labeling.}
 \label{fig:temporal}
 \end{figure}
@@ -258,7 +258,7 @@ with $r$ the estimated radius of the disk, as seen on Fig.~\ref{fig:depth}
 \begin{figure}
 \centering
 \includegraphics[width=0.3\textwidth]{images/depth.pdf}
-\caption{Bead depth estimation}
+\caption{Bead depth estimation: $R$ is the real radius, $r$ the observed radius, and $p$ the estimated depth.}
 \label{fig:depth}
 \end{figure}
 Unfortunately there is a sign uncertainty with this estimation, so a correct estimation must include information from the other slices associated with the same bead. Fig.~\ref{fig:multidepth} illustrates what happens, in a 2D $x+z$ simplified setting. Each intersection between the bead and a scanning plane yields a disk (a line in the drawing), from which two depths can be estimated,  only one of which is correct. The beads is moving between acquisitions, so there are two depths estimations per slice. We assume the correct ones are those that minimize the overall distance between them.
@@ -266,7 +266,7 @@ Unfortunately there is a sign uncertainty with this estimation, so a correct est
 \begin{figure}
 \centering
 \includegraphics[width=0.5\textwidth]{images/multidepth.pdf}
-\caption{When estimating the depth of the bead centroid over multiple slice acquisition, as the bead is moving, the centroid depth varies and can be one of two possibilities. However, we select the depth estimations that minimizes the overall Euclidean distance between them (represented with the yellow triangle).}
+\caption{When estimating the depth of the bead centroid over multiple slice acquisition (labeled 1, 2 and 3 in the drawing), as the bead is moving during the acquisition, the centroid depth varies and can be one of two possibilities. We select the depth estimations that minimizes the overall Euclidean distance between them (i.e. corresponding to the perimeter of the yellow triangle).}
 \label{fig:multidepth}
 \end{figure}
 
@@ -305,7 +305,7 @@ For a given $v$ binary vector,~\eqref{eq:depth} is convex due to the constraint~
 Since DC method solvers are complex to handle, we propose to solve~\eqref{eq:opt} using gradient descent with the $d'$ measure of~\eqref{eq:dprime}, but taking as reference the slice with the largest measured radius $r_{\max}$ instead of the middle slice. We set $\max\{r_{\max}, \bar{R}\}$ as the initialization for $R$ and $\lambda=\sigma_R$. In practice, the true $R^*$ is very close to the largest observed radius.
 
 \section{Results on simulations}
-To test our method, we simulate $N$ discrete sphere beads at high resolution with a random radius sampled from a Gaussian distribution as described in the previous section. The beads are subjected to Brownian motion and depth-ordered slice acquisition. We down-sample the result to ensure sub-pixel accurate positions. We estimate the radius of the intersection disk between each slice and the bead via the area method, and the $\bar{x}$, $\bar{y}$ position via moments. 
+To test our method, we simulate $N$ discrete sphere beads at high resolution with a random radius sampled from a Gaussian distribution as described in the previous section. The beads are subjected to isotropic Brownian motion and depth-ordered slice acquisition. We down-sample the result to ensure sub-pixel accurate positions. We estimate the radius of the intersection disk between each slice and the bead via the area method, and the $\bar{x}$, $\bar{y}$ position via moments. 
 The $z$ position and the bead radius is estimated as described above using the $d'$ method.
 
 \begin{figure}
@@ -333,9 +333,9 @@ On this table, we see that the average Euclidean position error in $x$ and $y$ i
 
 \begin{figure}
 \centering
-\subfigure{\includegraphics[width=0.45\textwidth]{images/ave_vs_smpl.pdf}}
-\subfigure{\includegraphics[width=0.45\textwidth]{images/std_vs_smpl.pdf}}
-\caption{Convergence of the diffusion estimator and its standard deviation as a function of the number of slices.}
+\subfigure[]{\includegraphics[width=0.45\textwidth]{images/ave_vs_smpl.pdf}}
+\subfigure[]{\includegraphics[width=0.45\textwidth]{images/std_vs_smpl.pdf}}
+\caption{Convergence of the diffusion estimator to a stable value (a) and its standard deviation as a function of the number of slices (b).}
 \label{fig:estim}
 \end{figure}
 
@@ -345,7 +345,7 @@ coefficient of $10^{-1}$, i.e. the one we simulated. The $x$ and $y$ are very cl
 Currently, this means that our optimisation method is indeed good enough for positional estimation in 3D, but that for more subtle measurements, like diffusion coefficient estimations, 2D measurements are sufficient. We note that we are able to measure this diffusion coefficient from single 3D acquisition only.
 
 \section{Results on real data}
-We applied our method on a video of 3$\mu$m beads, with $\Delta t=0.5s$. Comparison with manual labelling results show that we manage to correctly detect and label all beads, as well as track each bead individually with zero label error between 3D volumes. However, we overestimate beads presence in the z-axis due to the point spread function (PSF) of the microscope. In practice this means that beads faintly appear in slices above and below their true position. This overestimation is depicted in Fig.~\ref{fig:compa}. On slice 0, we tend to find beads that are not supposed to be segmented (false positives), i.e.the central bead of the illustration. This ``oversegmentation'' is nonetheless acceptable as it remains coherent in 3D and does not imply bias in 2D. In 3D, this can cause the bead radius to be overestimated, and will neeed to be corrected in future work.
+We applied our method on a video of 3$\mu$m beads, with $\Delta t=0.5s$. Resolution is $0.125\mu\text{m}$ per pixel in $x$ and $y$, and only $0.5\mu\text{m}$ per slide in $z$. Comparison with manual labelling results show that we manage to correctly detect and label all beads, as well as track each bead individually with zero label error between 3D volumes. However, we overestimate beads presence in the z-axis due to the point spread function (PSF) of the microscope. In practice this means that beads faintly appear in slices above and below their true position. This overestimation is depicted in Fig.~\ref{fig:compa}(c). On slice 0, we tend to find beads that are not supposed to be segmented (false positives), i.e.the central bead of the illustration. This ``oversegmentation'' is nonetheless acceptable as it remains coherent in 3D and does not imply bias in 2D. In 3D, this can cause the bead radius to be overestimated, and will need to be corrected in future work.
 
 \begin{figure}
 \centering
@@ -353,10 +353,10 @@ We applied our method on a video of 3$\mu$m beads, with $\Delta t=0.5s$. Compari
 \includegraphics[width = 0.3\linewidth]{images/seg_base_tot.png}
 \includegraphics[width = 0.3\linewidth]{images/modif_tot.png}\\
 \vspace{0.3em}
-\includegraphics[width = 0.3\linewidth]{images/orig.png}
-\includegraphics[width = 0.3\linewidth]{images/seg_base.png}
-\includegraphics[width = 0.3\linewidth]{images/modif.png}\\
-\caption{Comparison of segmentation results: from left to right: original frame, results of the first step of the 2D segmentation procedure before regularization, and after 3D regularization. Top images are the entire slices, and the bottom is a view along z-axis}
+\subfigure[]{\includegraphics[width = 0.3\linewidth]{images/orig.png}}
+\subfigure[]{\includegraphics[width = 0.3\linewidth]{images/seg_base.png}}
+\subfigure[]{\includegraphics[width = 0.3\linewidth]{images/modif.png}}\\
+\caption{Comparison of segmentation results: (a) original frame, (b) results of the first step of the 2D segmentation procedure before regularization, and (c) after 3D regularization. Top images are the entire $xy$ slices, and the bottom is a $xz$ view along the z-axis}
 \label{fig:compa}
 \end{figure}
 
@@ -366,7 +366,7 @@ On this sample, using our 2D method, we estimate an average diffusion coefficien
 In this article we tacked the problem of tracking fluorescent beads in 
 confocal microscopy, when we do not assume that beads are small enough to be assimilated to point sources, but instead span several slices; when they move between slices due to Brownian motion; and when their radius is not precisely known. Starting from 2D-based segmentation and 3D clustering using shape-based mathematical morphology, we have shown that estimating bead radius and true 3D positions from a small number of 2D slices is a difficult, but tractable problem. We have also shown that tracking these beads between 3D acquisitions is possible with a high degree of accuracy. One benefit of our approach is that we can obtain good estimates of the diffusion coefficient of Brownian motion from single 3D acquisition, which is useful for various physical measurements.
 
-In future work, we plan to improve the quality and speed of our optimisation method and we will release our software as a free, open-source package.
+In future work, we plan to improve the quality and speed of our optimisation method, to make better use of prior knowledge in 3D particularly for initial segmentation, and we will release our software as a free, open-source package.
 
 \bibliographystyle{splncs04}
 \bibliography{tracking3d}
