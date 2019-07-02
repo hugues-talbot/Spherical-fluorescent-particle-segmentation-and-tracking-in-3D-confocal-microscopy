@@ -75,7 +75,7 @@ CentraleSupelec, Centre de Vision Numérique, INRIA équipe OPIS, 3 rue Joliot-C
 Gif-sur-Yvette.\\
 }
 
-\date{ISMM 2019 --- Athens, Greece --- October 7-10, 2018}
+\date{ISMM 2019 ---  Saarbr\"ucken --- July 8-10, 2019}
 
 \logoleft{%
   \vspace{0.5cm}
@@ -88,7 +88,8 @@ Gif-sur-Yvette.\\
   %\includegraphics[width=10cm]{epita-logo} \\[-35pt]
   \vspace*{-3em}
 }
-\setbeamertemplate{footline}[text line]{\hfill{}\tiny ICIP 2018 --- Athens, Greece --- October 7-10, 2018}
+\setbeamertemplate{footline}[text line]{\hfill{}\tiny ISMM 2019 ---
+  Saarbr\"ucken, Germany --- July 8-10, 2019}
 
 %\setbeamertemplate{background canvas}{%
 %\tikz[remember picture,overlay]{\fill[color=blue] (-70, -70) ++(-1,0.5) rectangle ++(23.5,-26.5);
@@ -147,18 +148,20 @@ Gif-sur-Yvette.\\
       %
     \item[{\bf ~~Why our approach is interesting:}] ~ %
       \begin{itemize}
-      \item based on classical mathematical morphology operators~{\color{cyan}\cite{morpho}};
-      \item aggregates information from 2D slices to find most likely
-        position and radius;
-      \item 
+      \item segmentation and tracking are based on classical mathematical morphology operators~{\color{cyan}\cite{morpho}};
+      \item information is aggregated from 2D slices to find most likely
+        position and radius by an optimization method;
+      \item tracking and position estimation are achieved separately ;
+      \item 0.1 subpixel accuracy is achieved in positioning.
       \end{itemize} \bigskip %
       %
-    \item[{\bf ~~Conclusion:} ] ~\newline %
-      our method is
+    \item[{\bf ~~Key benefits:} ] ~\newline %
+      our method 
       \begin{itemize}
-      \item 
-      \item 
-      \item 
+      \item works on beads with imprecisely known radii
+      \item can accurately segment, track and position 3D beads even
+        in fluids
+      \item can be used to measure Brownian diffusion coefficients
       \end{itemize}
     \end{description}
     \includegraphics[width = 0.6\linewidth]{images/flowchart.pdf}
@@ -178,7 +181,8 @@ Gif-sur-Yvette.\\
    %\vskip .5em
     % ###############################################
     
-    \begin{block}{\bf Particle tracking}
+    \begin{block}{\bf Segmentation and tracking}
+      Segmentation and tracking consists of the following steps:
       \centering
 
       \vskip .5em
@@ -191,15 +195,20 @@ Gif-sur-Yvette.\\
 \end{enumerate}
 \begin{figure}
 \centering
-\subfigure[]{\includegraphics[width =  0.3\linewidth]{images/exp1_t41z4.png}}
-\subfigure[]{\includegraphics[width =  0.3\linewidth]{images/exp1_t41z4_bin.png}}
-\subfigure[]{\includegraphics[width =  0.3\linewidth]{images/surimp_exp1_t41z4.png}}
+\subfigure[]{\includegraphics[width =  0.32\linewidth]{images/exp1_t41z4.png}}
+\subfigure[]{\includegraphics[width =  0.32\linewidth]{images/exp1_t41z4_bin.png}}
+\subfigure[]{\includegraphics[width =  0.32\linewidth]{images/surimp_exp1_t41z4.png}}
 \caption{Illustration of the segmentation procedure: (a) initial image, (b) result of the segmentation described in the text,  (c) overlay of the segmentation on the initial image.}
 \label{fig:seg1}
 \end{figure}
         \item 3D regularization: 2D closing with a disk of radius 1 in the $xz$ planes.
         \item 3D individualization: beads markers are extracted using the distance transform and a watershed is applied and result is filtered using a volume criterion.
-        \item Temporal identification: labels are propagated between two consecutive frames $t$ and $t-1$ by finding the intersection between the beads at $t$ and $t-1$ used for the reconstruction by dilation. The remaining unlabeled beads are given new labels.
+        \item Temporal identification: labels are propagated between
+          two consecutive frames at $t$ and $t+1$ by finding the
+          intersection between the beads at both timesteps and
+          reconstructed by dilation. The remaining unlabeled beads are
+          given new labels.
+          \item Center bead positions are estimated separately from segmentation.
       \end{itemize}
      
 
@@ -280,11 +289,33 @@ Gif-sur-Yvette.\\
     
       \begin{minipage}{1\textwidth}\centering
         \begin{block}{\bf Position estimation}
+          Beads may move between
+          slices due to scanning time and Brownian motion.
 %      \begin{description}
         \begin{itemize}
-        \item Centroid estimation in 2D 
-        \item Centroid estimation in 3D with known bead radius
-        \item Centroid estimation in 3D with imprecise bead radius
+        \item Centroid are first estimated in 2D via grey-level moments
+              within labeled segmentation;
+        \item Knowing the bead radius, the 3D position can be estimated by
+          Pythagoras' theorem, but there is an uncertainty, since the
+          center of the bead can equally well be above or below the
+          considered 2D plane.
+        \item The uncertainty is resolved when considering all planes
+          belonging to a single bead by clustrering.
+        \item In fluid media, the bead moves between plane
+          acquisition, So a direct 3D centroid estimation is at best imprecise.
+          \begin{figure}
+            \centering
+            \includegraphics[width=0.5\textwidth]{images/multidepth.pdf}
+            \caption{Centroid depth over multiple slice acquisition
+              when the bead moves during the acquisition. Minimizing the
+              perimeter of the yellow triangle characterizes the most
+              likely centroid positions.}
+            \label{fig:multidepth}
+          \end{figure}
+          
+        \item Centroid estimation in 3D with imprecise bead radius can
+          be achieved with a mixed Difference of Convex /
+          combinatorial optimization approach described in the article.
       \end{itemize}
 %        \end{description}
         \end{block}
@@ -306,29 +337,18 @@ Gif-sur-Yvette.\\
           \newcommand{\bl}{\color{black}}
           
         \vskip -1em
-
-\resizebox{.67\linewidth}{!}{
-\begin{tabular}{|c|cccc|c|}
-    \hline 
-    \bl {\bf Method} & \bl {\bf ~set\#1~} & \bl {\bf ~set\#2~} & \bl {\bf ~set\#3~} & \bl {\bf ~set\#4~} & \bl {\bf ~runtime~~}\\
-    \hline\hline
-       \bl  {Xu et al.}~{\color{cyan}\cite{xu}} & \bl 0.997 & \bl 0.987 & \bl 0.999 & \bl 0.994 & \bl \textgreater 1min\\ % global score = .9816
-    \bl {LRDE \@ SmartDoc} & \bl 0.987 & \bl 0.977 & \bl 0.989 & \bl 0.984 & \bl \textgreater 1min\\
-%    {ISPL-CVML} & \bl 0.987 & \bl 0.965 & \bl 0.985 & \bl 0.977 \\
-    \bl {Leal et al.~{\color{cyan}\cite{leal}} (best)} & \bl 0.961 & \bl 0.944 & \bl 0.965 & \bl 0.930 & \bl 0.43s \\
-    \bl {\it SmartDoc average}~{\color{cyan}\cite{burie}} & \bl \it 0.946 & \bl \it 0.903 & \bl \it 0.938 & \bl \it 0.812 & \bl \it ? \\
-    \bl {~~Leal et al.~{\color{cyan}\cite{leal}} (fastest)~~} & \bl 0.921 & \bl 0.849 & \bl 0.909 & \bl 0.840 & \bl 0.10s \\
-    \hline
-    \bl  {Our} & \bl 0.905 & \bl 0.936 & \bl 0.859 & \bl 0.903 & \bl {\bf 0.04s} \\
-    \hline
-\end{tabular}
-}
+        \begin{figure}
+          \centering
+          \subfigure[]{\includegraphics[width=0.45\textwidth]{images/ave_vs_smpl.pdf}}
+          \subfigure[]{\includegraphics[width=0.45\textwidth]{images/std_vs_smpl.pdf}}
+          \caption{Convergence of the diffusion estimator to a stable value (a) and its standard deviation as a function of the number of slices (b).}
+        \end{figure}
         \end{block}
       %\end{minipage}
       %
       \hfill
       %
-            \begin{block}{\bf \color{white} Results on real data}
+            \begin{block}{\bf \color{white} Takeaway messages}
           \null\centering\relax
         %\newcommand{\greencheck{{\color{green}\checkmark}}}
 
