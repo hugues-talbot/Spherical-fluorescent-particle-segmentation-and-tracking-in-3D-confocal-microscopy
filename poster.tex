@@ -142,7 +142,7 @@ Gif-sur-Yvette.\\
       \item not many 3D segmentation methods exist for tracking in
         fluid: the particles move during acquisition due to Brownian
         motion;
-      \item Radius distribution is known but not precise radius.
+      \item radius distribution is known but not precise radius.
       \end{itemize} \bigskip %
       %
     \item[{\bf ~~Why our approach is interesting:}] ~ %
@@ -179,15 +179,14 @@ Gif-sur-Yvette.\\
     % ###############################################
     
     \begin{block}{\bf Particle tracking}
-    Particle trackin 
       \centering
 
       \vskip .5em
       \begin{itemize}
-          \item 2D Segmentation: \\ \begin{enumerate}
+          \item 2D Segmentation pipeline: \\ \begin{enumerate}
 \item Supression of small local minimas (closing by reconstruction with an initial dilation by a disk of radius 4).
 \item Calculation of the min-tree of the previous result.
-\item Filtering of nodes according to multiple criteria (size, grey-level intensity, contrast of component). 
+\item Filtering of nodes by combined criteria (size, grey-level intensity, contrast of component). 
 \item Regularisation of the selected blobs.
 \end{enumerate}
 \begin{figure}
