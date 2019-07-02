@@ -1,0 +1,58 @@
+% A variant of the TUGraz theme.
+\usetheme{TUGraz}
+
+% Shorten the space between institutes, set by default to 1em by
+% Beamer with the following command in beamerbasetitle.sty:
+%
+%   \def\beamer@andinst{\\[1em]}
+%
+\def\beamer@andinst{\\}
+
+\setbeamertemplate{headline}{
+  \leavevmode
+
+  \begin{beamercolorbox}[wd=\paperwidth]{headline}
+    \begin{columns}[T]
+      \begin{column}{.02\paperwidth}
+      \end{column}
+      \begin{column}{.15\paperwidth}
+        \vskip1cm
+        \begin{center}
+          \insertlogoleft
+%          \includegraphics[height=4cm]{images/ist_logo.png}
+          %\includegraphics[width=.6\linewidth]{logos/i6-hks44}
+        \end{center}
+        \vskip1.5cm
+      \end{column}
+      \begin{column}{.695\paperwidth}
+        \vskip4ex
+        %\raggedleft
+        \centering
+        \usebeamercolor{title in headline}{\color{fg}\textbf{\LARGE{\inserttitle}}}
+        \usebeamercolor{author in headline}{\color{fg}\large{\insertauthor}}
+        \usebeamercolor{institute in headline}{\color{fg}\large{\insertinstitute}}
+      \end{column}
+      \begin{column}{.15\paperwidth}
+        \vskip1cm
+        \begin{center}
+          \insertlogoright
+          %\includegraphics[height=4cm]{images/logo}
+          %\includegraphics[width=.7\linewidth]{}
+        \end{center}
+        \vskip1.5cm
+      \end{column}
+      \begin{column}{.03\paperwidth}
+      \end{column}
+    \end{columns}
+  \end{beamercolorbox}
+
+  \begin{beamercolorbox}[wd=\paperwidth]{lower separation line head}
+    \rule{0pt}{2pt}
+  \end{beamercolorbox}
+}
+
+% LRDE Logo.
+\pgfdeclaremask{lrdemask}{share/figs/lrdemask}
+\pgfdeclareimage[mask=lrdemask,interpolate=true,width=.10\textwidth]
+		{lrdelogo}{share/figs/lrde-big}
+\newcommand{\mylogo}{\pgfuseimage{lrdelogo}}

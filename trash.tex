@@ -1,0 +1,283 @@
+  
+  % ----------------------
+  % T O P
+  \vspace*{-0.2em}
+
+  \begin{exampleblock}{\bf At a glance}
+    \centering
+
+    \vspace*{.1em}
+
+  \begin{minipage}{.154\linewidth}
+    \includegraphics[width=\linewidth]{IMG_0336}
+   \captionof{subfigure}{Input.}
+    \label{fig:glob.input}
+  \end{minipage}
+  ~
+  \begin{minipage}{.154\linewidth}
+    \includegraphics[width=\linewidth]{IMG_0336_temp_lab_filtered}
+    \captionof{subfigure}{\Lab filtered.}
+    \label{fig:glob.labfiltered}
+  \end{minipage}
+  ~
+  \begin{minipage}{.154\linewidth}
+    \includegraphics[width=\linewidth]{IMG_0336_temp_grad}
+    \captionof{subfigure}{Gradient.}
+    \label{fig:glob.gradient}
+  \end{minipage}
+  ~
+   \begin{minipage}{.154\linewidth}
+    \includegraphics[width=\linewidth]{IMG_0336_temp_wst_basins}
+    \captionof{subfigure}{Basins.}
+    \label{fig:glob.basins}
+  \end{minipage}
+  ~
+   \begin{minipage}{.154\linewidth}
+    \includegraphics[width=\linewidth]{IMG_0336_temp_chunks_selection_alt}
+    \captionof{subfigure}{Chunks.}
+    \label{fig:glob.chunks}
+  \end{minipage}
+  ~
+   \begin{minipage}{.154\linewidth}
+    \includegraphics[width=\linewidth]{IMG_0336_out}
+    \captionof{subfigure}{Decision.}
+    \label{fig:glob.decision}
+  \end{minipage}
+
+     
+    \vspace*{-.8em}
+    \begin{columns}[t]
+      \hspace*{3em}\begin{column}{0.45\textwidth}
+%        \centering
+%        \begin{minipage}[t]{0.98\linewidth}
+          \begin{description}
+          \item[{\bf Problem:}] ~ %
+            \begin{itemize}
+            \item Real time document detection in smartphone videos is challenging
+            \end{itemize} \bigskip  % \bigskip\bigskip
+            %
+          \item[{\bf Why our approach is intersting:}] ~ %
+            \begin{itemize}
+            \item no apriori on documents on images
+            \item it is light enouth to be run on smartphones
+            \end{itemize}
+            %
+          \end{description}
+%        \end{minipage}
+      \end{column}
+      ~
+      \begin{column}{0.43\textwidth}
+%        \centering
+%        \begin{minipage}[t]{1.0\linewidth}
+%          \vspace*{1ex}
+          \begin{description}
+          \item[{\bf Conclusion:} ] ~ %
+          Our method is:
+            \begin{itemize}
+          \item robust to noise
+          \item fast: 0.04 s per frame
+          \item light 
+            \end{itemize}
+          Jaccard coefficient of 0.9 in average on SmartDoc 2015
+
+          \end{description}
+%        \end{minipage}
+      \end{column}
+    \end{columns}
+  \end{exampleblock}
+
+%%   % ###################################################################
+%%   % ###################################################################
+%%   % ###################################################################
+  \vspace*{0.4em}
+
+  % ###################################################################
+  % ###################################################################
+  % ###################################################################
+
+  \vspace*{-0.8em}
+
+  \begin{columns}[t]
+    %
+    \begin{column}{0.49\textwidth}
+      \begin{block}{\bf Description of the method}
+      \begin{description}
+        \item[{\bf Four main steps:}] ~
+        \begin{itemize}
+        \item  Reduce size and change of color space:  \\%
+            $\leadsto$ each frame is reduced (e.g. from 280 $\times$ 720 px to 180 $\times$ 100 px),\\
+            $\leadsto$ then converted to \Lab space,\\
+            $\leadsto$ and then regularized: morphological closing on \ensuremath{L} and erosion on \ensuremath{a}. 
+	   \item  Segment the image into regions: \\ %
+	        $\leadsto$ morphological thick gradient is computed on each component of \Lab and summed up,\\
+	        $\leadsto$   this summed gradient is filtered (regional minima are removed), \\
+	        $\leadsto$ and a watershed transform is applyied.
+       \item  Extract line chunks from region contours:  \\%
+            $\leadsto$ classical Hough transform is applyied on the binary watershed,\\
+            $\leadsto$ lines obtained are cut into chunks, keeping only the closest to the watershed line, and some parameters (orientation etc.) are stored.\\
+		  $\leadsto$ Redundant chunks are removed.
+       \item  Find the document boundaries: \\
+           $\leadsto$ classification of chunks (top, bottom, left, right) \\
+           $\leadsto$ paris of compatible chunks are made (top-left for example)\\
+           $\leadsto$ find the best path using energy criterion based on the distance to the watershed line
+      \end{itemize}
+        \end{description}
+        %
+        \begin{figure}[t]
+  \centering
+  \includegraphics[width=.24\linewidth, angle = 90]{IMG_0020_out}~
+  \includegraphics[width=.24\linewidth, angle = 90]{IMG_0333_out}~
+  \includegraphics[width=.24\linewidth, angle = 90]{IMG_0348_out}
+%  \medskip
+  
+  \caption*{Some results. \label{fig:results}}
+  \vspace*{-.7em}
+\end{figure}
+
+      \end{block}
+    \end{column}
+    %
+    \begin{column}{0.49\textwidth}
+      \begin{block}{\bf Results}
+      \begin{description}
+      
+      \item[{\bf Quantitative results on SmartDoc 15 Challenge database}]
+      
+        \begin{table}[t]
+                \ \\
+        \vspace{1cm}
+\centering
+\renewcommand{\arraystretch}{1.2}\setlength{\tabcolsep}{3pt}
+\resizebox{.99\linewidth}{!}{
+\begin{tabular}{|c|cccc|c|}
+    \hline
+    {\vspace*{.1em}\bf Method} & {\bf set 01} & {\bf set 02} & {\bf set 03} & {\bf set 04} & {\bf ~runtime~}\\
+    \hline\hline
+        {Xu \etal}~\cite{xu.2017.pami} & 0.997 & 0.987 & 0.999 & 0.994 & \textgreater 1min\\ % global score = .9816
+    {LRDE}~\cite{burie.2015.icdar} & 0.987 & 0.977 & 0.989 & 0.984 & \textgreater 1min\\
+%    {ISPL-CVML} & 0.987 & 0.965 & 0.985 & 0.977 \\
+    {Leal \etal~\cite{leal.2016.lacci} best} & 0.961 & 0.944 & 0.965 & 0.930 & 0.43s \\
+    {\it SmartDoc avg.}~\cite{burie.2015.icdar} & \it 0.946 & \it 0.903 & \it 0.938 & \it 0.812 & \it ? \\
+    {Leal \etal~\cite{leal.2016.lacci} fastest} & 0.921 & 0.849 & 0.909 & 0.840 & 0.10s \\
+    \hline
+    {Our} & 0.905 & 0.936 & 0.859 & 0.903 & {\bf 0.04s} \\
+    \hline
+\end{tabular} 
+}
+%\vspace*{-.2em}
+\caption*{Quantitative results (Jaccard coefficient) of automatic document detection methods applyied on 4 datasets. ``SmartDoc avg.'' corresponds to the average of the methods of the challenge.\label{tab:quantitative}}
+%\vspace*{-.9em}
+\end{table}
+
+
+    \item[{\bf Robustness of our method:}]
+    %
+    
+    
+        \begin{figure}[t]
+        \ \\
+        \vspace{1cm}
+  \centering  %trim=left bottom right top, clip
+  %
+  \subcaptionbox{Low-light environment + noise.\vspace*{.7em} \label{fig:robust.lowlight}}{
+  \includegraphics[trim=120 708 500 120, clip, width=.24\linewidth, angle = 90]{IMG_0336_dark}~
+  \hfil
+  \includegraphics[width=.24\linewidth, angle = 90]{IMG_0336_dark_wst}~
+  \hfil
+  \includegraphics[width=.24\linewidth, angle = 90]{IMG_0336_dark_out}}
+  %
+  \subcaptionbox{High-light environment + noise.\vspace*{.7em} \label{fig:robust.highlight}}{
+  \includegraphics[trim=120 708 500 120, clip, width=.24\linewidth, angle = 90]{brighter}~
+  \hfil
+  \includegraphics[width=.24\linewidth, angle = 90]{brighter_chunks}~
+  \hfil
+  \includegraphics[width=.24\linewidth, angle = 90]{brighter_out}}
+  %
+  \subcaptionbox{Defocus + flare. \label{fig:robust.defocus}}{
+  \includegraphics[trim=120 708 500 120, clip, width=.24\linewidth, angle = 90]{defocus2}~
+  \hfil
+  \includegraphics[width=.24\linewidth, angle = 90]{defocus2_chunks}~
+  \hfil
+  \includegraphics[width=.24\linewidth, angle = 90]{defocus2_out}}
+  \vspace*{-.5em}
+  %  
+  \caption*{Examples of the robustness of our method. From left to right: detail of the input image, chunks, final decision.\label{fig:robust}}
+  %\vspace*{-.7em}
+\end{figure}
+
+    \end{description}
+      \end{block}
+    \end{column}
+    
+
+  \end{columns}
+
+
+
+%% %###################################################################################
+%% %###################################################################################
+
+
+  \vspace*{0.4em}
+
+      
+  \begin{block}{\bf Selected bibliography}
+
+    \begin{thebibliography}{10}
+      \newcommand{\tinysep}{\vspace*{-.1em}}
+
+      \renewcommand{\baselinestretch}{.98}
+      \relsize{-0.5}
+      
+      \tinysep
+
+%    \bibitem{icip}  {\color{MyGray}{Y.~Xu, T.~G\'eraud, and I.~Bloch,
+%        ``{\bf From neonatal to adult brain {MR} image segmentation in
+%          a few seconds using {3D}-like fully convolutional network
+%          and transfer learning},'' in {\it ICIP}, pp. 4417--4421, 2017.}
+%      {\color{purple}\bf~~$\leadsto$~~\url{http://publications.lrde.epita.fr/xu.17.icip}}}
+%      \tinysep
+%
+%      \bibitem{brainles} {\color{MyGray}{Y.~Xu, \'E.~Puybareau,
+%          T.~G\'eraud, and J.~Chazalon, ``{\bf White matter
+%            hyperintensities segmentation in a few seconds using fully
+%            convolutional network and transfer learning},'' in {\it
+%            BrainLes (MICCAI 2017 competition)}, pp. 501--514,
+%          vol. 10670 of LNCS, Springer, 2018.}}  \tinysep
+%
+%    \bibitem{vgg}
+%      {\color{MyGray}{K.~Simonyan and A.~Zisserman,
+%      ``{\bf Very deep convolutional networks for large-scale image recognition},''
+%      {\it CoRR}, vol. abs/1409.1556, 2014.}}
+%      \tinysep
+%
+%    \bibitem{adubrain}
+%      {\color{MyGray}{A.~M. Mendrik {\it et~al.},
+%      ``{\bf {MRBrainS} challenge: Online evaluation
+%      framework for brain image segmentation in {3T MRI} scans},''
+%          {\it Computational Intelligence and Neuroscience}, 2015.}
+%        {\color{purple}\bf~~$\leadsto$~~\url{http://mrbrains13.isi.uu.nl/results.php}}}
+%      \tinysep
+%
+%    \bibitem{transfer}
+%      {\color{MyGray}{J.~Long, E.~Shelhamer, and T.~Darrell,
+%      ``{\bf Fully convolutional networks for semantic segmentation},''
+%      in {\it CVPR}, pp. 3431-3440, 2015.}}
+%      \tinysep
+%
+%    \bibitem{patch3D}
+%      {\color{MyGray}{H.~Chen {\it et al.},
+%      ``{\bf VoxResNet : Deep voxelwise residual networks for volumetric brain segmentation},''
+%      \url{https ://arxiv.org/abs/1608.05895}, 2016.}}
+%      \tinysep
+%      
+%    \bibitem{patch2Dhalf}
+%      {\color{MyGray}{K.~Fritscher {\it et al.},
+%      ``{\bf Deep neural networks for fast segmentation of 3D medical images},''
+%      in {\it MICCAI}, vol. 2, pp. 158-165, 2016.}}
+%      \tinysep
+      
+    \end{thebibliography}
+    
+  \end{block}
+
