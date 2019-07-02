@@ -8,11 +8,12 @@
 \usepackage[orientation=portrait,size=a0,scale=1.2]{beamerposter}
 %\usepackage[french]{babel}   % "babel.sty" + "french.sty"
 \graphicspath{{./}{../figs/}}
-
+\usepackage[utf8]{inputenc}
 \usepackage{multicol}
-\usepackage{caption}
-\usepackage{subcaption}
 \usepackage{subfigure}
+\usepackage{caption}
+%\usepackage{subcaption}
+
 
 %\usepackage{eurosym}
 \usepackage{MnSymbol}
@@ -136,13 +137,19 @@ Gif-sur-Yvette.\\
     \begin{description}
     \item[{\bf ~~Problem:}] ~ %
       \begin{itemize}
-      \item 
+      \item Spherical fluorescent beads are used in many areas of
+        physics and biology for positioning and tracking;
+      \item not many 3D segmentation methods exist for tracking in
+        fluid: the particles move during acquisition due to Brownian
+        motion;
+      \item Radius distribution is known but not precise radius.
       \end{itemize} \bigskip %
       %
     \item[{\bf ~~Why our approach is interesting:}] ~ %
       \begin{itemize}
-      \item based on classical mathematical morphology operators~{\color{cyan}\cite{morpho}}
-      \item 
+      \item based on classical mathematical morphology operators~{\color{cyan}\cite{morpho}};
+      \item aggregates information from 2D slices to find most likely
+        position and radius;
       \item 
       \end{itemize} \bigskip %
       %
@@ -192,7 +199,7 @@ Gif-sur-Yvette.\\
 \end{figure}
         \item 3D regularization: 2D closing with a disk of radius 1 in the $xz$ planes.
         \item 3D individualization: beads markers are extracted using the distance transform and a watershed is applied and result is filtered using a volume criterion.
-        \item Temporal identification: labels are propagated between two consecutive frames $t$ and $t-1$ by finding the intersection between the beads at $t$ and $t−1$ used for the reconstruction by dilation. The remaining unlabeled beads are given new labels.
+        \item Temporal identification: labels are propagated between two consecutive frames $t$ and $t-1$ by finding the intersection between the beads at $t$ and $t-1$ used for the reconstruction by dilation. The remaining unlabeled beads are given new labels.
       \end{itemize}
      
 
