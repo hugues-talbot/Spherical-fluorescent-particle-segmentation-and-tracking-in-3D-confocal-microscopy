@@ -145,16 +145,16 @@ Gif-sur-Yvette.\\
     \item[{\bf ~~Problem statement:}] ~ %
       \begin{itemize}
       \item Spherical fluorescent beads are used in many areas of
-        physics and biology for positioning and tracking;
+        physics and biology for positioning and tracking~{\color{cyan}\cite{benfenati2019efficient}};
       \item not many 3D segmentation methods exist for tracking in
         fluid: the particles move during acquisition due to Brownian
-        motion;
+        motion~{\color{cyan}\cite{puybareau2017morphologicalposter}};
       \item radius distribution is known but not precise radius.
       \end{itemize} \bigskip %
       %
     \item[{\bf ~~Why our approach is interesting:}] ~ %
       \begin{itemize}
-      \item segmentation and tracking are based on classical mathematical morphology operators~{\color{cyan}\cite{morpho}};
+      \item segmentation and tracking are based on classical mathematical morphology operators;
       \item information is aggregated from 2D slices to find most likely
         position and radius;
       \item tracking and position estimation are achieved separately ;
@@ -465,30 +465,29 @@ segmentation)
   \begin{column}{0.32\linewidth}
   \begin{alertblock}{\bf Selected bibliography}
 
+ \bibliographystyle{splncs04}
+\bibliography{tracking3d}
+    
    % \vskip -1em
     
-    \begin{thebibliography}{10}
-      \newcommand{\tinysep}{\vspace*{-.1em}}
+ %   \begin{thebibliography}{10}
+  %    \newcommand{\tinysep}{\vspace*{-.1em}}
 
 %      \renewcommand{\baselinestretch}{.98}
 %      \relsize{-0.5}
-      \centering
+  %    \centering
 
-      \hspace*{.1em}
+%      \hspace*{.1em}
 
     %\begin{column}{0.45\linewidth}
       
-      \tinysep
+%      \tinysep
       
-    \bibitem{morpho} {\color{MyGray}{L. Najman and H. Talbot, Eds.,
-        ``\textbf{Mathematical Morphology---From Theory to Applications},''
-        ISTE Ltd and John Wiley \& Sons Inc, 2010.}}
-      \tinysep
-
-
-
+%    \bibitem{morpho} {\color{MyGray}{L. Najman and H. Talbot, Eds.,
+ %       ``\textbf{Mathematical Morphology---From Theory to Applications},''
+%        ISTE Ltd and John Wiley \& Sons Inc, 2010.}
   
-    \end{thebibliography}
+ %   \end{thebibliography}
   \end{alertblock}
     \end{column}
     \end{columns}
