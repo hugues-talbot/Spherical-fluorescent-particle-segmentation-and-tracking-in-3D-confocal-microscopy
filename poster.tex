@@ -73,20 +73,26 @@ Université Paris-Est, ESIEE Paris, 2 boulevard Blaise-Pascal, F-93162 Noisy-le-
 \and
 CentraleSupelec, Centre de Vision Numérique, INRIA équipe OPIS, 3 rue Joliot-Curie, F-91190
 Gif-sur-Yvette.\\
+\ \\
 }
 
 \date{ISMM 2019 ---  Saarbr\"ucken --- July 8-10, 2019}
 
 \logoleft{%
   \vspace{0.5cm}
-  \hspace*{-2.5cm}\includegraphics[width=10cm]{lrde.png}\\[25pt]
-  \vspace*{-3em}
+
+\hspace*{-2.5cm}\includegraphics[width=5cm]{lrde.png} \\
+\hspace*{-2.5cm}\includegraphics[width=5cm]{epita-logo} \\
+\hspace*{-2.5cm}\includegraphics[width=10cm]{logo-CentraleSupelec.png}\\
+\hspace*{-2.5cm}\includegraphics[width=5cm]{UPS_Logo_Transparent.png}
 }
 
 \logoright{%
   \vspace*{1.5cm}
-  %\includegraphics[width=10cm]{epita-logo} \\[-35pt]
-  \vspace*{-3em}
+  \includegraphics[width=5cm]{Logo_LIGM_Transparent.png} \\[15pt]
+  \includegraphics[width=5cm]{Logo_ESIEE_Transparent.png} \\
+  \includegraphics[width=7cm]{Logo_UPE_transparent.png} \\
+  \includegraphics[width=7cm]{Inria_Logo_Transparent.png}
 }
 \setbeamertemplate{footline}[text line]{\hfill{}\tiny ISMM 2019 ---
   Saarbr\"ucken, Germany --- July 8-10, 2019}
@@ -118,7 +124,7 @@ Gif-sur-Yvette.\\
 
 \begin{frame}[fragile]
 
-\vskip-1em
+%\vskip-1em
    \begin{exampleblock}{\bf At a glance}
     \centering
 
@@ -126,12 +132,12 @@ Gif-sur-Yvette.\\
     \begin{figure}
 \centering
 \subfigure[]{\includegraphics[width =  0.15\linewidth]{images/exp1_t01z5.png}}
-\subfigure[]{\includegraphics[width =  0.15\linewidth]{images/orig_1.png}}
-\subfigure[]{\includegraphics[width =  0.15\linewidth]{images/orig_fermee_1.png}}
+\subfigure[]{\includegraphics[width =  0.15\linewidth, clip, trim = 5cm 5cm 0cm 0cm]{images/orig_1.png}}
+\subfigure[]{\includegraphics[width =  0.15\linewidth, clip, trim = 5cm 5cm 0cm 0cm]{images/orig_fermee_1.png}}
 %\vspace{0.3em}
-\subfigure[]{\includegraphics[width =  0.15\linewidth]{images/orig_separ_1.png}}
-\subfigure[]{\includegraphics[width =  0.15\linewidth]{images/toto.png}}
-\caption{Results of the successive steps: (a) initial image, (b) inital segmentation, (c) 3d regularization, (d) bead separation, (e) individualization and labeling.}
+\subfigure[]{\includegraphics[width =  0.15\linewidth, clip, trim = 5cm 5cm 0cm 0cm]{images/orig_separ_1.png}}
+\subfigure[]{\includegraphics[width =  0.15\linewidth, clip, trim = 5cm 5cm 0cm 0cm]{images/toto.png}}
+\caption{Results of the successive steps: (a) input image, and zoom on (b) initial segmentation, (c) 3D regularization, (d) bead separation, (e) individualization and labeling.}
 \label{fig:temporal}
 \end{figure}
     \begin{multicols}{2}
@@ -192,14 +198,17 @@ Gif-sur-Yvette.\\
 \item Filtering of nodes by combined criteria (size, grey-level intensity, contrast of component). 
 \item Regularisation of the selected blobs.
 \end{enumerate}
+\vspace{2em}
 \begin{figure}
 \centering
-\subfigure[]{\includegraphics[width =  0.32\linewidth]{images/exp1_t41z4.png}}
-\subfigure[]{\includegraphics[width =  0.32\linewidth]{images/exp1_t41z4_bin.png}}
-\subfigure[]{\includegraphics[width =  0.32\linewidth]{images/surimp_exp1_t41z4.png}}
+\hspace{-3.3em}
+\subfigure[]{\includegraphics[width =  0.35\linewidth]{images/exp1_t41z4.png}}
+\subfigure[]{\includegraphics[width =  0.35\linewidth]{images/exp1_t41z4_bin.png}}
+\subfigure[]{\includegraphics[width =  0.35\linewidth]{images/surimp_exp1_t41z4.png}}
 \caption{Illustration of the segmentation procedure: (a) initial image, (b) result of the segmentation described in the text,  (c) overlay of the segmentation on the initial image.}
 \label{fig:seg1}
 \end{figure}
+\vspace{1.2em}
         \item 3D regularization: 2D closing with a disk of radius 1 in the $xz$ planes.
         \item 3D individualization: beads markers are extracted using the distance transform and a watershed is applied and result is filtered using a volume criterion.
         \item Temporal identification: labels are propagated between
@@ -304,7 +313,7 @@ Gif-sur-Yvette.\\
           acquisition, So a direct 3D centroid estimation is at best imprecise.
           \begin{figure}
             \centering
-            \includegraphics[width=0.5\textwidth]{images/multidepth.pdf}
+            \includegraphics[width=0.71\textwidth]{images/multidepth.pdf}
             \caption{Centroid depth over multiple slice acquisition
               when the bead moves during the acquisition. Minimizing the
               perimeter of the yellow triangle characterizes the most
@@ -347,7 +356,7 @@ Gif-sur-Yvette.\\
       %
       \hfill
       %
-            \begin{block}{\bf \color{white} Takeaway messages}
+            \begin{block}{\bf \color{red} Takeaway messages}
           \null\centering\relax
         %\newcommand{\greencheck{{\color{green}\checkmark}}}
 
@@ -358,8 +367,9 @@ Gif-sur-Yvette.\\
         \begin{itemize}
             \item[\cmark] Correct beads segmentation 
             \item[\cmark] Correct beads identification
+            \item[\cmark] High accuracy for motion estimation (on simulated data)
             \item[\xmark] Overestimation of beads presence in z-axis;
-            \item[\xmark] No ground truth for the diffusion coefficient.
+            \item[\xmark] No ground truth for the real data diffusion coefficient.
         \end{itemize}
 \begin{figure}
 \centering
@@ -417,12 +427,45 @@ Gif-sur-Yvette.\\
 % ######################################################################
 % ######################################################################
   
-  \vskip .2em
+%  \vskip .2em
+    %
+    %\hfill
+    %
+    % RIGHT
+    %
+    \vskip 1em
+  \begin{columns}[t,totalwidth=\textwidth]
+  \begin{column}{0.66\linewidth}
+  \begin{exampleblock}{Conclusion}
+\begin{multicols}{2}
+ \begin{description}
+    \item[{\bf ~~In a few words:}] ~ %
+      \begin{itemize}
+      \item Our method has been tested on real and simulated data;
+      \item segmentation of 3D beads is performed using 2D slices;
+      \item our beads tracking has a high degree of accuracy.
+      \end{itemize} \bigskip %
+      %
 
+    \item[{\bf ~~Future Work:} ] ~ %
+      \begin{itemize}
+      \item Improve the quality and speed of our optimisation
+method;
+      \item Use of prior knowledge in 3D (for initial
+segmentation)
+      \item Release software as free and open-source
+      \end{itemize}
+    \end{description}
+    \end{multicols}
+
+\end{exampleblock}
+  \end{column}
   
+  \hfill
+  \begin{column}{0.32\linewidth}
   \begin{alertblock}{\bf Selected bibliography}
 
-    \vskip -1em
+   % \vskip -1em
     
     \begin{thebibliography}{10}
       \newcommand{\tinysep}{\vspace*{-.1em}}
@@ -432,42 +475,9 @@ Gif-sur-Yvette.\\
       \centering
 
       \hspace*{.1em}
-  \begin{columns}[t,totalwidth=.95\linewidth]
-    \begin{column}{0.45\linewidth}
+
+    %\begin{column}{0.45\linewidth}
       
-      \tinysep
-
-    \bibitem{leal} {\color{MyGray}{L.R.~Leal and B.L.~Bezerra,
-        ``\textbf{Smartphone camera document detection via geodesic object proposals},'' in
-        \textit{IEEE Latin American Conference on Computational Intelligence (LA-CCI)}, pp. 1--6, 2016.}}
-      \tinysep
-
-    \bibitem{xu} {\color{MyGray}{Y.~Xu, E.~Carlinet, T.~G\'eraud,
-        and L.~Najman, ``\textbf{Hierarchical segmentation using
-          tree-based shape spaces},'' \textit{IEEE Transactions on
-          Pattern Analysis and Machine Intelligence}, vol. 39, no. 3,
-        pp. 457--469, 2017.}}
-      \tinysep
-
-    \bibitem{liang} {\color{MyGray}{J. Liang, D. Doermann, and H. Li,
-        ``\textbf{Camera-based analysis of text and documents: A
-          survey},'' \textit{International Journal on Document Analysis and
-          Recognition}, vol. 7, no. 2, pp. 84--104, 2005.}}  \tinysep
-      \tinysep
-      
-    \end{column}
-    
-    \hspace*{2em}
-    \begin{column}{0.45\linewidth}
-    
-    \bibitem{movn} {\color{MyGray}{M. \^On V\~{u} Ng\d{o}c, J. Fabrizio, and T. G\'eraud,
-        ``\textbf{Saliency-based detection of identy documents captured by smartphones},'' in
-        \textit{IAPR International Workshop on Document Analysis Systems (DAS)}, pp. 387--392, 2018.}}
-      \tinysep
-
-    \bibitem{burie} {\color{MyGray}{J. Burie et al.,
-        ``\textbf{ICDAR 2015 competition on smartphone document capture and OCR (SmartDoc)},'' in
-        \textit{International Conference on Document Analysis and Recognition (ICDAR)}, pp. 1161--1165, 2015.}}
       \tinysep
       
     \bibitem{morpho} {\color{MyGray}{L. Najman and H. Talbot, Eds.,
@@ -475,12 +485,13 @@ Gif-sur-Yvette.\\
         ISTE Ltd and John Wiley \& Sons Inc, 2010.}}
       \tinysep
 
-    \end{column}
-  \end{columns}
+
+
   
     \end{thebibliography}
   \end{alertblock}
-  
+    \end{column}
+    \end{columns}
 
 \end{frame}
 
